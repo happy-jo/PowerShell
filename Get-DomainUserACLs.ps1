@@ -38,7 +38,7 @@ foreach($domain in $domains){
 
         #Run ACL Report on AD for domain User, save into file, print to screen, clear report Var
         $results = (Get-Acl "AD$($i):$(($user).DistinguishedName)").Access | ? {($_.IsInherited -EQ $false) -and ($_.ActiveDirectoryRights -eq  "GenericAll") -and ($_.IdentityReference -ne "NT AUTHORITY\SYSTEM") -and ($_.IdentityReference -ne "S-1-5-32-548") -and ($_.IdentityReference -notlike "*\Domain Admins")} | select @{l="Username";e={$($user.samaccountname)}}, @{l="DisplayName";e={$($user.Name)}}, IdentityReference, AccessControlType, ActiveDirectoryRights, IsInherited, @{l="Description";e={$($user.Description)}}, @{l="Domain";e={$($domain)}}
-        $results | Export-Csv -NoTypeInformation -Append -Path "c:\dos\full-AuthUsers-Report.csv"
+        $results | Export-Csv -NoTypeInformation -Append -Path "c:\temp\full-AuthUsers-Report.csv"
         $results | format-table
         $results = $null
 
